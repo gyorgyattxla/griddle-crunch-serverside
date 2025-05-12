@@ -20,10 +20,11 @@ $this->registerCssFile('@web/css/login.css', ['depends' => [\yii\bootstrap5\Boot
 
         <!-- Jobb oldali űrlap -->
         <div class="form-side">
+
             <div class="login-card">
-                <div class="logo-img">
-                    <img alt="logo" src="/assets/logo.png" />
-                </div>
+<!--                <div class="logo-img">-->
+<!--                    <img alt="logo" src="/assets/logo.png" />-->
+<!--                </div>-->
 
                 <div class="header">
                     <h2>Login to your Account</h2>
