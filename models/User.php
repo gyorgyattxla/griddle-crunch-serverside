@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "user".
  *
  * @property int $id
- * @property string $name
+ * @property string $username
  * @property string $password_hash
  * @property string $email
  * @property string $created_at
@@ -33,9 +33,9 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             [['updated_at'], 'default', 'value' => null],
-            [['name', 'password_hash', 'email', 'created_at'], 'required'],
+            [['username', 'password_hash', 'email', 'created_at'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
-            [['name', 'password_hash'], 'string', 'max' => 255],
+            [['username', 'password_hash'], 'string', 'max' => 255],
             [['email'], 'string', 'max' => 191],
             [['email'], 'unique'],
         ];
@@ -48,11 +48,21 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'username' => 'Username',
             'password_hash' => 'Password Hash',
             'email' => 'Email',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public static function findByUsername($username)
+    {
+        return self::find()->where(['username' => $username])->one();
+    }
+
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 }
