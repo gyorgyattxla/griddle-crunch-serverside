@@ -44,9 +44,9 @@ class SiteController extends Controller
     public function actions()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
+//            'error' => [
+//                'class' => 'yii\web\ErrorAction',
+//            ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
@@ -125,4 +125,26 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    public function actionError()
+    {
+        $exception = Yii::$app->errorHandler->exception;
+
+        if ($exception !== null) {
+            // Ha HTTPException, például 404 vagy 403
+            if ($exception instanceof \yii\web\HttpException) {
+                if ($exception->statusCode == 404) {
+                    return $this->render('error-404', ['exception' => $exception]);
+                }
+            }
+
+            // Minden más hiba
+            return $this->render('error', ['exception' => $exception]);
+        }
+
+        // Ha valamiért nincs exception
+        return $this->render('error');
+    }
 }
+
+
