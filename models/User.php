@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
@@ -14,7 +15,7 @@ use Yii;
  * @property string $created_at
  * @property string|null $updated_at
  */
-class User extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
 
 
@@ -37,7 +38,7 @@ class User extends \yii\db\ActiveRecord
             [['created_at', 'updated_at'], 'safe'],
             [['username', 'password_hash'], 'string', 'max' => 255],
             [['email'], 'string', 'max' => 191],
-            [['email'], 'unique'],
+            [['email', 'auth_key'], 'unique'],
         ];
     }
 
@@ -61,8 +62,42 @@ class User extends \yii\db\ActiveRecord
         return self::find()->where(['username' => $username])->one();
     }
 
-    public function validatePassword($password)
+    public function validatePassword($password){
+        return password_verify($password, $this->password_hash);
+    }
+
+    public static function findIdentity($id)
     {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
+        return self::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return null;
+    }
+
+    /**
+     * @return int|string current user ID
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string|null current user auth key
+     */
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    /**
+     * @param string $authKey
+     * @return bool|null if auth key is valid for current user
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
     }
 }
