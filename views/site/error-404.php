@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->registerCssFile('@web/css/error.css', ['depends' => [\yii\bootstrap5\BootstrapAsset::class]]);
 
-$this->title = 'Az oldal nem található';
+$this->title = 'Page not found';
 ?>
 
 <div class="container text-center py-5">

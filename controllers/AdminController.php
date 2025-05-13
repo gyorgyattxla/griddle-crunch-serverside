@@ -116,13 +116,20 @@ class AdminController extends Controller
         ]);
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
+    public function actionMeals(){
+        return $this->render('meals');
     }
+
+    public function actionAllergens(){
+        return $this->render('allergens');
+    }
+
+    public function actionCategories(){
+        return $this->render('categories');
+    }
+
+    public function actionTags(){
+        return $this->render('tags');
+    }
+
 }

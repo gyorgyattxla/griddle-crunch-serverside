@@ -64,7 +64,7 @@ class SiteController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->redirect(['site/login']);
         }
-        return $this->render('index');
+        return $this->render('/admin/index');
     }
 
     /**
@@ -80,7 +80,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect(['admin/index']);
         }
 
         $model->password = '';
@@ -117,16 +117,6 @@ class SiteController extends Controller
         return $this->render('contact', [
             'model' => $model,
         ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
     }
 
     public function actionError()
