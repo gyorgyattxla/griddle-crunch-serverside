@@ -33,7 +33,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <?php
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
+//        'brandUrl' => Yii::$app->homeUrl,
+        'brandUrl' => ['/site/login'],
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
     $menuItems = [];
