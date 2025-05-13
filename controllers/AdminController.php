@@ -2,8 +2,10 @@
 
 namespace app\controllers;
 
+use app\assets\AppAsset;
 use Yii;
 use yii\filters\AccessControl;
+use yii\web\Application;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -77,7 +79,7 @@ class AdminController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->goHome();
         }
 
         $model->password = '';
@@ -97,32 +99,24 @@ class AdminController extends Controller
 
         return $this->goHome();
     }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
+    /*
+    public function actionMeal()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
+        return $this->render('meals');
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
+    public function actionCategory()
     {
-        return $this->render('about');
+        return $this->render('categories');
     }
+
+    public function actionTag()
+    {
+        return $this->render('tags');
+    }
+
+    public function actionAllergen()
+    {
+        return $this->render('allergens');
+    }*/
 }

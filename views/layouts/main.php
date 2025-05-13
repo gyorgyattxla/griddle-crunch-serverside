@@ -44,10 +44,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     } else {
         // Items visible only to logged-in users
         $menuItems[] = ['label' => 'Dashboard', 'url' => ['/admin/index']];
-        $menuItems[] = ['label' => 'Meals', 'url' => ['/site/contact']];
-        $menuItems[] = ['label' => 'Categories', 'url' => ['/site/index']];
-        $menuItems[] = ['label' => 'Tags', 'url' => ['-']];
-        $menuItems[] = ['label' => 'Allergens', 'url' => ['-']];
+        $menuItems[] = ['label' => 'Meals', 'url' => ['/admin/meals']];
+        $menuItems[] = ['label' => 'Categories', 'url' => ['/admin/categories']];
+        $menuItems[] = ['label' => 'Tags', 'url' => ['/admin/tags']];
+        $menuItems[] = ['label' => 'Allergens', 'url' => ['/admin/allergens']];
 
 
         // Logout button
