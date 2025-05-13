@@ -42,9 +42,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
         // Items visible only to logged-in users
-        $menuItems[] = ['label' => 'Overview', 'url' => ['-']];
+        $menuItems[] = ['label' => 'Dashboard', 'url' => ['/admin/index']];
+        $menuItems[] = ['label' => 'Meals', 'url' => ['/site/contact']];
         $menuItems[] = ['label' => 'Categories', 'url' => ['/site/index']];
-        $menuItems[] = ['label' => 'Menus', 'url' => ['/site/contact']];
         $menuItems[] = ['label' => 'Tags', 'url' => ['-']];
         $menuItems[] = ['label' => 'Allergens', 'url' => ['-']];
 
