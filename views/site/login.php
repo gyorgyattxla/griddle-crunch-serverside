@@ -11,7 +11,6 @@ $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerCssFile('@web/css/login.css', ['depends' => [\yii\bootstrap5\BootstrapAsset::class]]);
 ?>
-
 <div class="login-page">
     <div class="login-container">
 
@@ -22,24 +21,11 @@ $this->registerCssFile('@web/css/login.css', ['depends' => [\yii\bootstrap5\Boot
         <div class="form-side">
 
             <div class="login-card">
-<!--                <div class="logo-img">-->
-<!--                    <img alt="logo" src="/assets/logo.png" />-->
-<!--                </div>-->
 
-                <div class="header">
+
+                <div class="header mb-2">
                     <h2>Login to your Account</h2>
-                    <p>See what is going on with your business.</p>
                 </div>
-
-                <button class="btn btn-outline-secondary w-75 mb-3 google-btn">
-                    <img
-                            src="https://img.icons8.com/color/16/000000/google-logo.png"
-                            alt="Google"
-                    />
-                    &nbsp; Continue with Google
-                </button>
-
-                <div class="divider-text">or sign in with email</div>
 
                 <?php $form = ActiveForm::begin([
                     'id' => 'login-form',
@@ -51,7 +37,7 @@ $this->registerCssFile('@web/css/login.css', ['depends' => [\yii\bootstrap5\Boot
                     ],
                 ]); ?>
 
-                <div class="mb-3">
+                <div class="mb-3 p-2">
                     <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
                 </div>
 
