@@ -50,11 +50,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     } else {
         // Items visible only to logged-in users
         $menuItems[] = ['label' => 'Dashboard', 'url' => ['/admin/index']];
-        $menuItems[] = ['label' => 'Meals', 'url' => ['/admin/meals']];
-        $menuItems[] = ['label' => 'Categories', 'url' => ['/admin/categories']];
-        $menuItems[] = ['label' => 'Tags', 'url' => ['/admin/tags']];
-        $menuItems[] = ['label' => 'Allergens', 'url' => ['/admin/allergens']];
-
+        $menuItems[] = ['label' => 'Meals', 'url' => ['/meal/index']];
+        $menuItems[] = ['label' => 'Categories', 'url' => ['/category/index']];
+        $menuItems[] = ['label' => 'Tags', 'url' => ['/tag/index']];
+        $menuItems[] = ['label' => 'Allergens', 'url' => ['/allergen/index']];
 
         // Logout button
         $menuItems[] = '<li class="nav-item ms-auto">'
@@ -92,7 +91,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             <div class="col-md-6 text-center text-md-start">
                 &copy; Griddle & Crunch, developed by Fazekas Bálint and György Attila.
             </div>
-<!--            <div class="col-md-6 text-center text-md-end">--><?php //= Yii::powered() ?><!--</div>-->
         </div>
     </div>
 </footer>

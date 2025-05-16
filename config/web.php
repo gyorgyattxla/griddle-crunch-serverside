@@ -47,6 +47,9 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'GET /categories' => 'api/get-all-categories',
+                'GET /categories/<category_id:\d+>' => 'api/get-meals-by-category',
+                'GET /products' => 'api/get-all-meals',
             ],
         ],
     ],

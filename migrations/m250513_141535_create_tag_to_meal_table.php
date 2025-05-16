@@ -13,10 +13,11 @@ class m250513_141535_create_tag_to_meal_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%tag_to_meal}}', [
-            'id' => $this->primaryKey(),
             'tag_id' => $this->integer()->notNull(),
             'meal_id' => $this->integer()->notNull(),
         ]);
+        $this->addForeignKey('tag-id-tag_to_meal-tag_id', 'tag_to_meal', 'tag_id', 'tag', 'id', 'CASCADE');
+        $this->addForeignKey('meal-id-tag_to_meal-meal_id', 'tag_to_meal', 'meal_id', 'meal', 'id', 'CASCADE');
     }
 
     /**
