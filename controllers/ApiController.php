@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Category;
+use app\models\Client;
 use app\models\Meal;
 use app\models\Tag;
 use yii\rest\Controller;
@@ -37,6 +38,27 @@ class ApiController extends Controller
 
     public function actionGetAllCategories() : array {
         return Category::find()->asArray()->all();
+    }
+
+    public function actionRegister() {
+
+        $request = Yii::$app->request->post();
+        $data = $request->getBodyParams();
+
+        $client = new Client();
+        $client->firstname = $data['firstname'] ?? null;
+        $client->lastname = $data['lastname'] ?? null;
+        $client->email = $data['email'] ?? null;
+        $client->address = null;
+        $client->setPassword($data['password'] ?? '');
+        $client->generateAuthKey();
+
+        if ($client->validate() && $client->save()) {
+            return ['success' => true, 'message' => 'Client registered successfully.'];
+        }
+
+        Yii::$app->response->statusCode = 400;
+        return ['success' => false, 'errors' => $client->errors];
     }
 
 }
