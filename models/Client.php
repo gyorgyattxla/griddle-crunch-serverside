@@ -37,7 +37,7 @@ class Client extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             [['auth_key', 'address', 'updated_at'], 'default', 'value' => null],
-            [['firstname', 'lastname', 'password_hash', 'email', 'created_at'], 'required'],
+            [['firstname', 'lastname', 'password_hash', 'email'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
             [['firstname', 'lastname', 'password_hash', 'address'], 'string', 'max' => 255],
             [['auth_key', 'email'], 'string', 'max' => 191],

@@ -20,7 +20,7 @@ class m250519_100631_create_client_table extends Migration
             'password_hash' => $this->string(255)->notNull(),
             'email' => $this->string(191)->notNull()->unique(),
             'address' => $this->string(255)->null(),
-            'created_at' => $this->timestamp()->notNull(),
+            'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')->notNull(),
             'updated_at' => $this->timestamp()->null(),
         ]);
     }
