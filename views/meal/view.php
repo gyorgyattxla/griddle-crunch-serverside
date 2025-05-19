@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Meal;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -34,6 +35,26 @@ $this->params['breadcrumbs'][] = $this->title;
             'ingredients',
             'category_id',
             'price',
+            [
+                'attribute' => 'image',
+                'format' => 'html',
+                'value' => function ($model) {
+                    if ($model->image) {
+                        return Html::img(Yii::getAlias('@web/uploads/') . $model->image, [
+                            'alt' => $model->name,
+                            'style' => 'max-width: 200px; max-height: 200px;',
+                        ]);
+                    } else {
+                        return '(nincs kép)';
+                    }
+                },
+            ],
+            [
+                'attribute' => 'allergens',
+                'value' => function (Meal $model) {
+                    return json_encode($model->getAllergenNumber());
+                }
+            ],
         ],
     ]) ?>
 

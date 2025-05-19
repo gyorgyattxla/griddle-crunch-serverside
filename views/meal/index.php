@@ -35,6 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'category_id',
             'price',
             [
+                   'attribute' => 'allergens',
+                'value' => function (Meal $model) {
+
+                    return json_encode($model-> getAllergenNumber());
+                }
+],
+            [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Meal $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);

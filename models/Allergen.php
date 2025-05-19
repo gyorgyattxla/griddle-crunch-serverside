@@ -48,4 +48,6 @@ class Allergen extends \yii\db\ActiveRecord
         ];
     }
 
+
+
 }

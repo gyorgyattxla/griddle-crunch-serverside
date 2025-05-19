@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use yii\web\UploadedFile;
 /**
  * This is the model class for table "category".
  *
@@ -43,5 +43,19 @@ class Category extends \yii\db\ActiveRecord
             'name' => 'Name',
         ];
     }
+
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        $fields['image'] = function () {
+            return $this->image
+                ? Yii::$app->request->hostInfo . Yii::$app->request->baseUrl . '/uploads/categories/' . $this->image
+                : null;
+        };
+
+        return $fields;
+    }
+
 
 }

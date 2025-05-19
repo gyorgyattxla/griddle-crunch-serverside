@@ -31,6 +31,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
+            [
+                'attribute' => 'image',
+                'format' => 'html',
+                'value' => function ($model) {
+                    if ($model->image) {
+                        return Html::img(Yii::getAlias('@web') . '/uploads/categories/' . $model->image, [
+                            'alt' => $model->name,
+                            'style' => 'max-width: 200px; max-height: 200px;',
+                        ]);
+                    } else {
+                        return '(nincs kép)';
+                    }
+                },
+            ],
         ],
     ]) ?>
 

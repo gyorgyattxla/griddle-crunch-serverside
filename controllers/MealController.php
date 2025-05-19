@@ -3,10 +3,14 @@
 namespace app\controllers;
 
 use app\models\Meal;
+use app\models\TagToMeal;
 use app\models\MealSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\AllergenToMeal;
+use yii\web\UploadedFile;
 
 /**
  * MealController implements the CRUD actions for Meal model.
@@ -69,17 +73,34 @@ class MealController extends Controller
     {
         $model = new Meal();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->image = UploadedFile::getInstance($model, 'image');
+            if ($model->validate()) {
+                if ($model->image) {
+                    $filename = uniqid() . '.' . $model->image->extension;
+                    $path = Yii::getAlias('@webroot/uploads/') . $filename;
+                    if ($model->image->saveAs($path)) {
+                        $model->image = $filename;
+                    }
+                }
+                if ($model->save(false)) {
+                    // Allergén kapcsolatok mentése
+                    if (!empty($model->allergens)) {
+                        foreach ($model->allergens as $allergenId) {
+                            $relation = new AllergenToMeal();
+                            $relation->meal_id = $model->id;
+                            $relation->allergen_id = $allergenId;
+                            $relation->save();
+                        }
+                    }
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
         } else {
             $model->loadDefaultValues();
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->render('create', ['model' => $model]);
     }
 
     /**
@@ -93,8 +114,32 @@ class MealController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $imageFile = UploadedFile::getInstance($model, 'image');
+            if ($imageFile) {
+                $filename = uniqid() . '.' . $imageFile->extension;
+                $path = Yii::getAlias('@webroot/uploads/') . $filename;
+                if ($imageFile->saveAs($path)) {
+                    $model->image = $filename;
+                }
+            }
+
+            if ($model->save(false)) {
+                // Régi kapcsolatok törlése
+                AllergenToMeal::deleteAll(['meal_id' => $model->id]);
+
+                // Új kapcsolatok mentése
+                if (!empty($model->allergens)) {
+                    foreach ($model->allergens as $allergenId) {
+                        $relation = new AllergenToMeal();
+                        $relation->meal_id = $model->id;
+                        $relation->allergen_id = $allergenId;
+                        $relation->save();
+                    }
+                }
+
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
