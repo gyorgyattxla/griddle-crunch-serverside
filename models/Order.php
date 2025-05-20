@@ -34,7 +34,7 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             [['status'], 'default', 'value' => 'unverified'],
-            [['client_id', 'client_name', 'client_address', 'payment_method', 'order_time'], 'required'],
+            [['client_name', 'client_address', 'payment_method'], 'required'],
             [['client_id'], 'integer'],
             [['order_time'], 'safe'],
             [['client_name', 'client_address', 'status'], 'string', 'max' => 255],
