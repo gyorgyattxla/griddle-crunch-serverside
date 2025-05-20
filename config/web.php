@@ -56,6 +56,7 @@ $config = [
                 'POST /register' => 'api/register',
                 'POST /login' => 'api/login',
                 'OPTIONS /checkout' => 'api/options',
+                'GET /vieworder/<order_id:\d+>' => 'api/view-order',
             ],
         ],
     ],
