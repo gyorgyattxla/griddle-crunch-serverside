@@ -48,9 +48,11 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'category/create-ajax' => 'category/create-ajax',
                 'GET /categories' => 'api/get-all-categories',
                 'GET /categories/<category_id:\d+>' => 'api/get-meals-by-category',
                 'GET /products' => 'api/get-all-meals',
+                'GET /products/<id:\d+>' => 'api/get-meal',
                 'POST /register' => 'api/register',
             ],
         ],

@@ -4,9 +4,11 @@ namespace app\controllers;
 
 use app\models\Allergen;
 use app\models\AllergenSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * AllergenController implements the CRUD actions for Allergen model.
@@ -69,17 +71,22 @@ class AllergenController extends Controller
     {
         $model = new Allergen();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if (Yii::$app->request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return [
+                    'id' => $model->id,
+                    'name' => $model->name,
+                ];
             }
-        } else {
-            $model->loadDefaultValues();
+            return $this->redirect(['index']);
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form', ['model' => $model]);
+        }
+
+        return $this->render('create', ['model' => $model]);
     }
 
     /**
@@ -131,4 +138,5 @@ class AllergenController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
 }

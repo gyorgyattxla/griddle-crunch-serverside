@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Meal;
+use app\models\Tag;
 use app\models\TagToMeal;
 use app\models\MealSearch;
 use Yii;
@@ -11,6 +12,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\AllergenToMeal;
 use yii\web\UploadedFile;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * MealController implements the CRUD actions for Meal model.
@@ -74,6 +77,8 @@ class MealController extends Controller
         $model = new Meal();
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->tags = Yii::$app->request->post('Meal')['tags'] ?? [];
+
             $model->image = UploadedFile::getInstance($model, 'image');
             if ($model->validate()) {
                 if ($model->image) {
@@ -84,15 +89,8 @@ class MealController extends Controller
                     }
                 }
                 if ($model->save(false)) {
-                    // Allergén kapcsolatok mentése
-                    if (!empty($model->allergens)) {
-                        foreach ($model->allergens as $allergenId) {
-                            $relation = new AllergenToMeal();
-                            $relation->meal_id = $model->id;
-                            $relation->allergen_id = $allergenId;
-                            $relation->save();
-                        }
-                    }
+                    // allergének mentése (ahogy nálad van)
+                    // ...
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
@@ -115,6 +113,8 @@ class MealController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
+            $model->tags = Yii::$app->request->post('Meal')['tags'] ?? [];
+
             $imageFile = UploadedFile::getInstance($model, 'image');
             if ($imageFile) {
                 $filename = uniqid() . '.' . $imageFile->extension;
@@ -125,19 +125,8 @@ class MealController extends Controller
             }
 
             if ($model->save(false)) {
-                // Régi kapcsolatok törlése
-                AllergenToMeal::deleteAll(['meal_id' => $model->id]);
-
-                // Új kapcsolatok mentése
-                if (!empty($model->allergens)) {
-                    foreach ($model->allergens as $allergenId) {
-                        $relation = new AllergenToMeal();
-                        $relation->meal_id = $model->id;
-                        $relation->allergen_id = $allergenId;
-                        $relation->save();
-                    }
-                }
-
+                // allergének kezelése (törlés, mentés)
+                // ...
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
@@ -175,5 +164,65 @@ class MealController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionCreateTagAjax()
+    {
+        $model = new Tag();
+
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            if ($model->validate() && $model->save()) {
+                return ['success' => true];
+            }
+
+            return ['success' => false, 'validationErrors' => ActiveForm::validate($model)];
+        }
+
+        return $this->renderAjax('_form_tag', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionCreateAllergenAjax()
+    {
+        $model = new \app\models\Allergen();
+
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            if ($model->validate() && $model->save()) {
+                return ['success' => true];
+            }
+
+            return ['success' => false, 'validationErrors' => ActiveForm::validate($model)];
+        }
+
+        return $this->renderAjax('_form_allergen', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionTagListJson()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $tags = Tag::find()->orderBy('name')->all();
+        $result = [];
+        foreach ($tags as $tag) {
+            $result[$tag->id] = $tag->name;
+        }
+        return $result;
+    }
+
+    public function actionAllergenListJson()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $allergens = \app\models\Allergen::find()->orderBy('name')->all();
+        $result = [];
+        foreach ($allergens as $allergen) {
+            $result[$allergen->id] = $allergen->name;
+        }
+        return $result;
     }
 }

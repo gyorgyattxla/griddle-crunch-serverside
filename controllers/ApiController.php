@@ -17,6 +17,7 @@ class ApiController extends Controller
         $behaviors['corsFilter'] = [
             'class' => \yii\filters\Cors::class,
         ];
+
         return $behaviors;
     }
 

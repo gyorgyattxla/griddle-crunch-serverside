@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 <div class="tag-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'tag-form']); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

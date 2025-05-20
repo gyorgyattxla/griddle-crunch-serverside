@@ -75,12 +75,26 @@ class Meal extends \yii\db\ActiveRecord
             ->column();
     }
 
+    public function getTagObjects()
+    {
+        if (empty($this->tags)) {
+            return [];
+        }
+        return Tag::find()->where(['id' => $this->tags])->all();
+    }
+
     public function fields()
     {
         $fields = parent::fields();
 
         $fields['image'] = function () {
             return $this->image ? Yii::$app->request->hostInfo . Yii::$app->request->baseUrl . '/uploads/' . $this->image : null;
+        };
+
+        // címkék nevei tömbben
+        $fields['tags'] = function () {
+            $tags = $this->getTagObjects();
+            return array_map(fn($tag) => $tag->name, $tags);
         };
 
         return $fields;

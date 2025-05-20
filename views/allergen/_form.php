@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 <div class="allergen-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'allergen-form']); ?>
 
     <?= $form->field($model, 'number')->textInput() ?>
 
