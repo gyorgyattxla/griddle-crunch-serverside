@@ -137,4 +137,20 @@ class ApiController extends Controller
         }
     }
 
+    public function actionViewOrder($order_id)
+    {
+
+        $order = Order::findOne($order_id);
+
+        if (!$order) {
+            return ['error' => 'Order not found'];
+        }
+
+        return [
+            'order_id' => $order->id,
+            'client_address' => $order->client_address,
+            'status' => $order->status,
+        ];
+    }
+
 }
