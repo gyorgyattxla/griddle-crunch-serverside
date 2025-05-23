@@ -6,16 +6,19 @@ use Yii;
 use yii\web\IdentityInterface;
 
 /**
- * This is the model class for table "user".
+ * This is the model class for table "client".
  *
  * @property int $id
- * @property string $username
+ * @property string $firstname
+ * @property string $lastname
+ * @property string|null $auth_key
  * @property string $password_hash
  * @property string $email
+ * @property string|null $address
  * @property string $created_at
  * @property string|null $updated_at
  */
-class User extends \yii\db\ActiveRecord implements IdentityInterface
+class Client extends \yii\db\ActiveRecord implements IdentityInterface
 {
 
 
@@ -24,7 +27,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return 'user';
+        return 'client';
     }
 
     /**
@@ -33,12 +36,13 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['updated_at'], 'default', 'value' => null],
-            [['username', 'password_hash', 'email', 'created_at'], 'required'],
+            [['auth_key', 'address', 'updated_at'], 'default', 'value' => null],
+            [['firstname', 'lastname', 'password_hash', 'email'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
-            [['username', 'password_hash'], 'string', 'max' => 255],
-            [['email'], 'string', 'max' => 191],
-            [['email', 'auth_key'], 'unique'],
+            [['firstname', 'lastname', 'password_hash', 'address'], 'string', 'max' => 255],
+            [['auth_key', 'email'], 'string', 'max' => 191],
+            [['email'], 'unique'],
+            [['auth_key'], 'unique'],
         ];
     }
 
@@ -49,17 +53,25 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'username' => 'Username',
+            'firstname' => 'Firstname',
+            'lastname' => 'Lastname',
+            'auth_key' => 'Auth Key',
             'password_hash' => 'Password Hash',
             'email' => 'Email',
+            'address' => 'Address',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
     }
 
-    public static function findByUsername($username)
+    public function setPassword($password)
     {
-        return self::find()->where(['username' => $username])->one();
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
+
+    public function generateAuthKey()
+    {
+        $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
     public function validatePassword($password){

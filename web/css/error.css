@@ -1,0 +1,16 @@
+.error_img{
+    width: 300px;
+    height: 300px;
+}
+
+.content{
+    font-size: 12rem;
+    color: #EA6A12;
+}
+
+.back_button{
+    background-color: #EA6A12;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+}

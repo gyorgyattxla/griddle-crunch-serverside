@@ -10,7 +10,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
-class SiteController extends Controller
+class AdminController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -44,9 +44,9 @@ class SiteController extends Controller
     public function actions()
     {
         return [
-//            'error' => [
-//                'class' => 'yii\web\ErrorAction',
-//            ],
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
@@ -61,10 +61,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect(['site/login']);
-        }
-        return $this->render('/admin/index');
+        return $this->render('index');
     }
 
     /**
@@ -80,7 +77,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->redirect(['admin/index']);
+            return $this->goBack();
         }
 
         $model->password = '';
@@ -119,25 +116,20 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionError()
-    {
-        $exception = Yii::$app->errorHandler->exception;
-
-        if ($exception !== null) {
-            // Ha HTTPException, például 404 vagy 403
-            if ($exception instanceof \yii\web\HttpException) {
-                if ($exception->statusCode == 404) {
-                    return $this->render('error-404', ['exception' => $exception]);
-                }
-            }
-
-            // Minden más hiba
-            return $this->render('error', ['exception' => $exception]);
-        }
-
-        // Ha valamiért nincs exception
-        return $this->render('error');
+    public function actionMeals(){
+        return $this->render('meals');
     }
+
+    public function actionAllergens(){
+        return $this->render('allergens');
+    }
+
+    public function actionCategories(){
+        return $this->render('categories');
+    }
+
+    public function actionTags(){
+        return $this->render('tags');
+    }
+
 }
-
-

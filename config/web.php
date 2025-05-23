@@ -4,6 +4,7 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
+//    'defaultRoute' => 'site/login',
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -11,6 +12,7 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -42,14 +44,22 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'GET /categories' => 'api/get-all-categories',
+                'GET /categories/<category_id:\d+>' => 'api/get-meals-by-category',
+                'GET /products' => 'api/get-all-meals',
+                'POST /checkout' => 'api/save-order',
+                'GET /products/<id:\d+>' => 'api/get-meal',
+                'POST /register' => 'api/register',
+                'POST /login' => 'api/login',
+                'OPTIONS /checkout' => 'api/options',
+                'GET /vieworder/<order_id:\d+>' => 'api/view-order',
+                'GET /open-hours' => 'api/get-open-hours',
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

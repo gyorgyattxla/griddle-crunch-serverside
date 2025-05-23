@@ -2,7 +2,6 @@
 
 /** @var yii\web\View $this */
 /** @var yii\bootstrap5\ActiveForm $form */
-
 /** @var app\models\LoginForm $model */
 
 use yii\bootstrap5\ActiveForm;
@@ -10,46 +9,66 @@ use yii\bootstrap5\Html;
 
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
+$this->registerCssFile('@web/css/login.css', ['depends' => [\yii\bootstrap5\BootstrapAsset::class]]);
 ?>
-<div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="login-page">
+    <div class="login-container">
 
-    <p>Please fill out the following fields to login:</p>
+        <!-- Bal oldali kép -->
+        <div class="image-side"></div>
 
-    <div class="row">
-        <div class="col-lg-5">
+        <!-- Jobb oldali űrlap -->
+        <div class="form-side">
 
-            <?php $form = ActiveForm::begin([
-                'id' => 'login-form',
-                'fieldConfig' => [
-                    'template' => "{label}\n{input}\n{error}",
-                    'labelOptions' => ['class' => 'col-lg-1 col-form-label mr-lg-3'],
-                    'inputOptions' => ['class' => 'col-lg-3 form-control'],
-                    'errorOptions' => ['class' => 'col-lg-7 invalid-feedback'],
-                ],
-            ]); ?>
+            <div class="login-card">
 
-            <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
-            <?= $form->field($model, 'password')->passwordInput() ?>
+                <div class="header mb-2">
+                    <h2>Login to your Account</h2>
+                </div>
 
-            <?= $form->field($model, 'rememberMe')->checkbox([
-                'template' => "<div class=\"custom-control custom-checkbox\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-            ]) ?>
+                <?php $form = ActiveForm::begin([
+                    'id' => 'login-form',
+                    'fieldConfig' => [
+                        'template' => "{label}\n{input}\n{error}",
+                        'labelOptions' => ['class' => 'form-label'],
+                        'inputOptions' => ['class' => 'form-control'],
+                        'errorOptions' => ['class' => 'invalid-feedback'],
+                    ],
+                ]); ?>
 
-            <div class="form-group">
-                <div>
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <div class="mb-3 p-2">
+                    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                </div>
+
+                <div class="mb-3">
+                    <?= $form->field($model, 'password')->passwordInput() ?>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <?= $form->field($model, 'rememberMe')->checkbox([
+                        'template' => "<div class=\"form-check\">{input} {label}</div>\n{error}",
+                        'labelOptions' => ['class' => 'form-check-label'],
+                        'inputOptions' => ['class' => 'form-check-input'],
+                    ]) ?>
+                </div>
+
+                <div class="form-group">
+                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary w-100 login-btn', 'name' => 'login-button']) ?>
+                </div>
+
+                <?php ActiveForm::end(); ?>
+
+                <div class="login-footer">
+                    <div class="text-center mt-3">
+                        <a href="#">Forgot Password?</a>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        Not registered yet? <a href="#">Create an account</a>
+                    </div>
                 </div>
             </div>
-
-            <?php ActiveForm::end(); ?>
-
-            <div style="color:#999;">
-                You may login with <strong>admin/admin</strong> or <strong>demo/demo</strong>.<br>
-                To modify the username/password, please check out the code <code>app\models\User::$users</code>.
-            </div>
-
         </div>
     </div>
 </div>
