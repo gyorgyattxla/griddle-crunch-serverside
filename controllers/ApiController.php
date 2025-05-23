@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\Allergen;
+use app\models\AllergenToMeal;
 use app\models\Category;
 use app\models\Client;
 use app\models\Meal;
@@ -56,7 +58,10 @@ class ApiController extends Controller
     }
 
     public function actionGetMeal($id){
-        return Meal::findOne($id);
+        return [
+            'meal' => Meal::findOne($id),
+            'allergens' => AllergenToMeal::find()->asArray()->where(['meal_id' => $id])->all()
+        ];
     }
 
     public function actionGetMealTags($id){
