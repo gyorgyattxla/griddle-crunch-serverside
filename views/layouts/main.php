@@ -55,6 +55,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         $menuItems[] = ['label' => 'Tags', 'url' => ['/tag/index']];
         $menuItems[] = ['label' => 'Allergens', 'url' => ['/allergen/index']];
         $menuItems[] = ['label' => 'Orders', 'url' => ['/order/index']];
+        $menuItems[] = ['label' => 'Open Hours', 'url' => ['/open-hours/index']];
 
         // Logout button
         $menuItems[] = '<li class="nav-item ms-auto">'

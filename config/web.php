@@ -57,7 +57,7 @@ $config = [
                 'POST /login' => 'api/login',
                 'OPTIONS /checkout' => 'api/options',
                 'GET /vieworder/<order_id:\d+>' => 'api/view-order',
-                'GET /' => 'api/get-open-hours',
+                'GET /open-hours' => 'api/get-open-hours',
             ],
         ],
     ],
