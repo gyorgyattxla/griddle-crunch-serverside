@@ -7,6 +7,7 @@ use app\models\AllergenToMeal;
 use app\models\Category;
 use app\models\Client;
 use app\models\Meal;
+use app\models\OpenHours;
 use app\models\Order;
 use app\models\OrderItems;
 use app\models\Tag;
@@ -140,6 +141,7 @@ class ApiController extends Controller
             $orderItem->quantity = $meal['quantity'];
             $orderItem->save();
         }
+        return ['success' => true, 'orderId' => $order->id];
     }
 
     public function actionViewOrder($order_id)
@@ -156,6 +158,10 @@ class ApiController extends Controller
             'client_address' => $order->client_address,
             'status' => $order->status,
         ];
+    }
+
+    public function actionGetOpenHours() : array {
+        return OpenHours::find()->asArray()->all();
     }
 
 }
