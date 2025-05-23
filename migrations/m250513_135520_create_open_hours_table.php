@@ -14,8 +14,9 @@ class m250513_135520_create_open_hours_table extends Migration
     {
         $this->createTable('{{%open_hours}}', [
             'id' => $this->primaryKey(),
-            'name' => $this->string(255)->notNull(),
-            'time' => $this->integer()->notNull()->comment('Éjfél után eltelt percek'),
+            'day_name' => $this->string(255)->notNull(),
+            'open_time' => $this->string()->notNull(),
+            'close_time' => $this->string()->notNull(),
         ]);
     }
 
