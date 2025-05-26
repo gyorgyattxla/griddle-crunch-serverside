@@ -26,9 +26,9 @@ class ApiController extends Controller
             'class' => Cors::class,
             'cors' => [
                 // Allow requests from localhost:8100
-                'Origin' => ['http://localhost:8100'],  // Change this if necessary
+                'Origin' => ['*'],  // Change this if necessary
                 'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-                'Access-Control-Allow-Credentials' => true,
+                'Access-Control-Allow-Credentials' => false,
                 'Access-Control-Max-Age' => 86400,  // Cache preflight response for 24 hours
                 // Optionally, if you need custom headers
                 'Access-Control-Request-Headers' => ['x-custom-header', 'Content-Type', 'Authorization'],
