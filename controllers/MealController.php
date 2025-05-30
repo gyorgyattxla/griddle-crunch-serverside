@@ -77,7 +77,7 @@ class MealController extends Controller
         $model = new Meal();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->tags = Yii::$app->request->post('Meal')['tags'] ?? [];
+            $model->tag_ids = Yii::$app->request->post('Meal')['tags'] ?? [];
 
             $model->image = UploadedFile::getInstance($model, 'image');
             if ($model->validate()) {
