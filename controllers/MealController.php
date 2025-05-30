@@ -77,7 +77,7 @@ class MealController extends Controller
         $model = new Meal();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->tags = Yii::$app->request->post('Meal')['tags'] ?? [];
+            $model->tag_ids = Yii::$app->request->post('Meal')['tags'] ?? [];
 
             $model->image = UploadedFile::getInstance($model, 'image');
             if ($model->validate()) {
@@ -89,8 +89,19 @@ class MealController extends Controller
                     }
                 }
                 if ($model->save(false)) {
-                    // allergének mentése (ahogy nálad van)
-                    // ...
+                    // Először töröld a korábbi allergén-kapcsolatokat
+                    \app\models\AllergenToMeal::deleteAll(['meal_id' => $model->id]);
+
+                    // Most mentsd el az új allergénkapcsolatokat
+                    if (!empty($model->allergens) && is_array($model->allergens)) {
+                        foreach ($model->allergens as $allergenId) {
+                            $atm = new \app\models\AllergenToMeal();
+                            $atm->meal_id = $model->id;
+                            $atm->allergen_id = $allergenId;
+                            $atm->save(false);
+                        }
+                    }
+
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
@@ -125,8 +136,19 @@ class MealController extends Controller
             }
 
             if ($model->save(false)) {
-                // allergének kezelése (törlés, mentés)
-                // ...
+
+                AllergenToMeal::deleteAll(['meal_id' => $model->id]);
+
+                // Mentsd el az újakat
+                if (!empty($model->allergens) && is_array($model->allergens)) {
+                    foreach ($model->allergens as $allergenId) {
+                        $atm = new AllergenToMeal();
+                        $atm->meal_id = $model->id;
+                        $atm->allergen_id = $allergenId;
+                        $atm->save(false);
+                    }
+                }
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }

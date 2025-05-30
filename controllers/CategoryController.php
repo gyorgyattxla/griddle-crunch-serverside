@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Category;
 use app\models\CategorySearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -48,16 +49,27 @@ class CategoryController extends Controller
     {
         $model = new Category();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
+        if (Yii::$app->request->isPost) {
+            if ($model->load(Yii::$app->request->post())) {
                 $model->image = UploadedFile::getInstance($model, 'image');
+
                 if ($model->validate()) {
                     if ($model->image) {
                         $filename = uniqid() . '.' . $model->image->extension;
-                        $model->image->saveAs(\Yii::getAlias('@webroot/uploads/categories/') . $filename);
+                        $model->image->saveAs(Yii::getAlias('@webroot/uploads/categories/') . $filename);
                         $model->image = $filename;
                     }
+
                     $model->save(false);
+
+                    if (Yii::$app->request->isAjax) {
+                        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                        return [
+                            'id' => $model->id,
+                            'name' => $model->name,
+                        ];
+                    }
+
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
@@ -65,9 +77,11 @@ class CategoryController extends Controller
             $model->loadDefaultValues();
         }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_form', ['model' => $model]);
+        }
+
+        return $this->render('create', ['model' => $model]);
     }
 
     public function actionUpdate($id)
@@ -107,6 +121,5 @@ class CategoryController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
 
 }

@@ -33,8 +33,15 @@ MealAsset::register($this);
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'ingredients')->textInput(['maxlength' => true]) ?>
+<div class="row">
+    <div class="col-md-6">
+        <?= $form->field($model, 'category_id')->dropDownList($categories, ['prompt' => 'Válassz kategóriát...']) ?>
+    </div>
+    <div class="col-md-1 d-flex align-items-center">
+        <?= Html::button('Új Kategória', ['class' => 'btn btn-primary mt-4', 'id' => 'btn-new-category']) ?>
+    </div>
+</div>
 
-    <?= $form->field($model, 'category_id')->dropDownList($categories, ['prompt' => 'Válassz kategóriát...']) ?>
 
     <div class="row">
         <div class="col-md-6">
@@ -82,25 +89,13 @@ MealAsset::register($this);
 
     <?php ActiveForm::end(); ?>
 
-    <!-- Új címke létrehozás modal -->
     <?php
     Modal::begin([
-        'title' => '<h5>Új címke létrehozása</h5>',
+        'title' => '<h5>Hozzáadás</h5>',
         'id' => 'modal-tag',
         'size' => Modal::SIZE_DEFAULT,
     ]);
-    echo "<div id='modal-tag-content'></div>";  // AJAX tartalom ide töltődik
-    Modal::end();
-    ?>
-
-    <!-- Új allergén létrehozás modal -->
-    <?php
-    Modal::begin([
-        'title' => '<h5>Új allergén létrehozása</h5>',
-        'id' => 'modal-allergen',
-        'size' => Modal::SIZE_DEFAULT,
-    ]);
-    echo "<div id='modal-allergen-content'></div>";  // AJAX tartalom ide töltődik
+    echo "<div id='modal-tag-content'></div>";
     Modal::end();
     ?>
 
