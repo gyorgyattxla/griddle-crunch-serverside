@@ -59,10 +59,7 @@ class ApiController extends Controller
     }
 
     public function actionGetMeal($id){
-        return [
-            'meal' => Meal::findOne($id),
-            'allergens' => AllergenToMeal::find()->asArray()->where(['meal_id' => $id])->all()
-        ];
+        return Meal::findOne($id);
     }
 
     public function actionGetMealTags($id){

@@ -10,6 +10,7 @@ use yii\bootstrap5\Html;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerCssFile('@web/css/login.css', ['depends' => [\yii\bootstrap5\BootstrapAsset::class]]);
+
 ?>
 <div class="login-page">
     <div class="login-container">

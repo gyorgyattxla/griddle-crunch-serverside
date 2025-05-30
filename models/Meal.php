@@ -18,6 +18,10 @@ use Yii;
 class Meal extends \yii\db\ActiveRecord
 {
     public $allergens;
+    /**
+     * @var array|mixed|null
+     */
+    public $tags;
 
     /**
      * {@inheritdoc}
@@ -77,10 +81,11 @@ class Meal extends \yii\db\ActiveRecord
 
     public function getTagObjects()
     {
-        if (empty($this->tags)) {
+        $tags = $this->getTags()->all();
+        if (empty($tags)) {
             return [];
         }
-        return Tag::find()->where(['id' => $this->tags])->all();
+        return $tags;
     }
 
     public function fields()
@@ -95,6 +100,15 @@ class Meal extends \yii\db\ActiveRecord
         $fields['tags'] = function () {
             $tags = $this->getTagObjects();
             return array_map(fn($tag) => $tag->name, $tags);
+        };
+
+        $fields['allergens'] = function () {
+            return array_map(function ($allergen) {
+                return [
+                    'id' => $allergen->id,
+                    'name' => $allergen->name,
+                ];
+            }, $this->allergenModels);
         };
 
         return $fields;
